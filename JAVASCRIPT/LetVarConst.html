@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+</head>
+<body style="background-color: rgba(209, 209, 209, 0.082);">
+   <h1>Contents for LET, VAR, CONST</h1>
+     <b>
+      <ol style="color:orange">
+         <li>Scope</li>
+         <li>variable shadowing</li>
+         <li>variable declaration</li>
+         <li>variable declaration without initialization</li>
+         <li>Re-initialization of variables</li>
+         <li>How execution context works?
+         </li>
+         <li>Hoisting & Temporal Dead zone</li>
+      </ol>
+     </b>
+     
+   <script>
+      //1. Scope
+       var a1 = 10;
+       {
+            console.log(a1)
+       } 
+
+       {
+         var a2 = 30
+       }
+       console.log("Showing the global scope of Var :" +a2)
+      
+       //Scope of let
+       let b1 = 12;
+       {
+         console.log(b1)//12
+       }
+       {
+         let b2 = 20;
+       }
+       //console.log(b2)//Error undefined
+      
+       const c1 = 15;
+       {
+         console.log(c1)//15
+       }
+       {
+         const c2 = 25
+       }
+      // console.log(c2)//Error undefined
+
+       // Variable Shadowing
+
+       {
+         let b3 = 20
+         {
+            let b3 = 40;
+            console.log(b3)// 40 
+         }
+         console.log(b3)//20
+       }
+
+       var a3 = 11;
+       {
+         var a3= 13;
+         console.log(a3)
+       }
+       console.log(a3)//13
+
+       const c3 = 100;
+       {
+         const c3 = 140;
+         console.log(c3)//140
+       }
+       console.log(c3)//100
+       //const c3 = 120; Re-declaration is not allowed and re-initialization not possible for const in same scope
+
+       //illegal Shadowing
+
+       function f1(){
+         var a4 = 102;
+         let b4 = 101;
+         {
+          //var b4 = 102; illegal shadowing Error
+          let a4 = 103 ;
+          console.log(b4) //101
+          console.log(a4)//legal shadowing o/p 103
+         }
+         console.log(b4)//101
+       }
+       //console.log(b4) Error
+       f1()
+       //console.log(a4) Error because a4 is declared inside the f1() so it act as function scope outside function we can't access.
+       
+       //3.Declaration
+       var a5;
+       var a5;
+
+       let b5;
+       //let b5; Error
+
+       //const c5; Just Declaration not allowed
+       const c5 = 100;
+       //const c5 = 120; //Not allowed
+
+       //5.Re-Declaration & Re-Initialization of Variable
+
+       var a6;
+       var a6;//Allowed
+      
+       var a7 = 10;
+       var a7 = 20;
+
+       let b6;
+       //let b6; Not allowed
+
+       let b7 = 23;
+       b7 =33;// Allowed
+
+       //const c7; Not Allowed
+       const c7 = 102;
+       // c7 = 105;//Not allowed
+
+       //Hoisting
+       console.log(count); // undefined 
+      var count=4;
+
+      console.log(f2)// it prints function body
+      function f2(){
+         console.log("Hoisting")
+      }
+      f2()// Hoisting
+
+      //console.log(name)//Error cannot access name before initialization
+      let name = "Dileep"
+      //console.log(c)//Error cannot access c before initialization
+      const c = 109;
+
+      //Note : Hoisting is not possible for let and const because of Temporal Dead Zone(TDZ).
+
+
+
+  </script>
+  <h2>1. Scope</h2>
+  <ul>
+   <li>Var has the global scope</li>
+   <li>let , const has the local scope</li>
+  </ul>
+  <br>
+  <h2>2. Variable Shadowing</h2>
+  <ul><li>When a variable is initialized in a certain scope, by using the same name when we call the variable in inner scope, the inner variable value is get stored into that memory. This is called <b>Variable shadowing</b> or <b>Variable masking</b>.  </li>
+   <br><li><b>Illegal Shadowing</b> Now, while shadowing a variable, it should not cross the boundary of the scope, i.e. we can shadow var variable by let variable but cannot do the opposite. In simple words we can say we cannot reduce the scope, if we try to shadow let variable by var variable, it is known as Illegal Shadowing and it will give the error as “variable is already defined.” </li>
+</ul>
+
+<h2>3.Declaration</h2>
+<ul>
+   <li>We can't declare the let,const in same scope for multiple times</li>
+   <li>Ex: let a; <br> let a; // not allowed</li>
+   <li>Just declaration of const is not allowed it should be initialized while declaration</li>
+   <li>var can declare multiple times in same scope</li>
+   <li>Ex: var a; <br> var a;</li>
+</ul>
+<h2>4.variable declaration without initialization</h2>
+<ul>
+   <li>Just Declaration is allowed for <b>var , let</b> but not for <strike>const</strike>.</li>
+</ul>
+
+<h2>5.Re-Declaration & Re-Initialization of Variable</h2>
+<ul>
+   <li>Re-Declaration & Re-Initialization of <b>var</b> is possible </li>
+   <li>Re-Declaration is not possible for <b>let</b> but Re-Initialization is possible</li>
+   <li>Re-Declaration & Re-Initialization both are not allowed for <b>const</b>.</li>
+</ul>
+
+<h2>6.How execution context works ?</h2>
+
+<P> <b>JavaScript executes the following snippet in 2 phases line by line.</b>
+
+   <br>There are 2 phases :
+   <ol>
+      <li>Creation phase</li>
+      <li>Execution phase</li>
+   </ol>
+   <h4>Creation phase</h4>   
+   <ol>
+      <li>It creates a global or window object</li>
+      <li>It setups a memory heap for storing functions and variables references. It takes all variables and functions to store inside the window object.</li>
+      <li>It Initializes variables and functions. For variables it initializes with undefined and for functions declaration it stores the complete function body and stores inside the window object.</li>
+   </ol>   
+   <h4>Execution phase</h4>
+   <li>JS engine executes the code line by line. It assigns values to variables and executes the function calls.</li>
+
+</P>
+
+<h2>7.Hoisting & Temporal Dead zone</h2>
+
+<h4>What is Hoisting ?</h4>
+<p>During the creation phase JS engines moves the declaration of variables and function to the top of the code which is know as hoisting.</p>
+<li><b>Temporal Dead Zone (TDZ)</b> it is a time span between the variable declaration and variable utilization</li>
+</body>
+</html>
